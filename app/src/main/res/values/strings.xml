@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="lang_en">EN</string>
+    <string name="lang_vi">VI</string>
+
+    <string name="menu">MENU</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_settings">Settings</string>
+    <string name="drawer_exit">Exit</string>
+
+    <string name="btn_kiem_hang"> Insert</string>
+    <string name="btn_kiem_nhan">Check</string>"
+
+    <string name="master_label">Master label</string>
+    <string name="wo_no">Wo no</string>
+    <string name="item_code">Item code</string>
+    <string name="date">Date</string>
+    <string name="qty">Qty</string>
+    <string name="btn_create">Create</string>
+
+</resources>

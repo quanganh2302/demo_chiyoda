@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="lang_en">EN</string>
+    <string name="lang_vi">VI</string>
+
+    <string name="menu">MENU</string>
+    <string name="drawer_home">Trang chủ</string>
+    <string name="drawer_settings">Cài đặt</string>
+    <string name="drawer_exit">Thoát</string>
+
+    <string name="btn_kiem_hang">Kiểm hàng</string>
+    <string name="btn_kiem_nhan">Kiểm nhận</string>"
+
+    <string name="master_label">Nhãn tổng</string>
+    <string name="wo_no" translatable="false">Số oder</string>
+    <string name="item_code" translatable="false">Mã sản phẩm</string>
+    <string name="date" translatable="false">Ngày sản xuất</string>
+    <string name="qty">Số lượng</string>
+    <string name="btn_create">Tạo</string>
+
+
+</resources>

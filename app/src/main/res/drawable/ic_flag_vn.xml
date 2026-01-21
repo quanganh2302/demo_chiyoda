@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="30dp"
+    android:viewportWidth="45"
+    android:viewportHeight="30">
+
+    <!-- Nền đỏ -->
+    <path
+        android:fillColor="#DA251D"
+        android:pathData="M0,0h45v30h-45z" />
+
+    <!-- Ngôi sao vàng chính giữa -->
+    <path
+        android:fillColor="#FFFF00"
+        android:pathData="M22.5,7
+            l2.025,6.225
+            h6.55
+            l-5.3,3.85
+            l2.025,6.225
+            l-5.3,-3.85
+            l-5.3,3.85
+            l2.025,-6.225
+            l-5.3,-3.85
+            h6.55z" />
+</vector>

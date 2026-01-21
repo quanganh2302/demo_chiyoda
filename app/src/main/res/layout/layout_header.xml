@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/light_primary">
+
+    <!-- ================= MENU BUTTON (LEFT) ================= -->
+    <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/menu"
+        android:src="@drawable/ic_menu"
+        android:scaleType="fitCenter"
+        app:tint="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- ================= LOGO (CENTER) ================= -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toEndOf="@id/btnMenu"
+        app:layout_constraintEnd_toStartOf="@id/langContainer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <!-- ================= LANGUAGE CONTAINER (RIGHT) ================= -->
+    <LinearLayout
+        android:id="@+id/langContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- ===== EN ===== -->
+        <LinearLayout
+            android:id="@+id/showFlagEn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/flagEn"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/lang_en"
+                android:src="@drawable/ic_flag_en" />
+
+            <View
+                android:id="@+id/underlineEn"
+                android:layout_width="48dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@android:color/white"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- ===== VI ===== -->
+        <LinearLayout
+            android:id="@+id/showFlagVi"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2dp"
+            android:layout_marginStart="8dp">
+
+            <ImageView
+                android:id="@+id/flagVi"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/lang_vi"
+                android:src="@drawable/ic_flag_vn" />
+
+            <View
+                android:id="@+id/underlineVi"
+                android:layout_width="48dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@android:color/white"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

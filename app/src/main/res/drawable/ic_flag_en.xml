@@ -1,0 +1,33 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="30dp"
+    android:viewportWidth="24"
+    android:viewportHeight="16">
+    <!-- Blue background -->
+    <path
+        android:fillColor="#012169"
+        android:pathData="M0,0h24v16h-24z" />
+
+    <!-- White diagonals -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="0"
+        android:pathData="M0,0l24,16M24,0l-24,16" />
+
+    <!-- Red diagonals -->
+    <path
+        android:fillColor="#C8102E"
+        android:strokeWidth="0"
+        android:pathData="M0,0l24,16M24,0l-24,16"
+        android:strokeColor="#C8102E" />
+
+    <!-- White cross -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M10,0h4v16h-4zM0,6h24v4h-24z" />
+
+    <!-- Red center cross -->
+    <path
+        android:fillColor="#C8102E"
+        android:pathData="M11,0h2v16h-2zM0,7h24v2h-24z" />
+</vector>
