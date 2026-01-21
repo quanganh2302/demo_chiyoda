@@ -18,4 +18,20 @@
     <string name="qty">Qty</string>
     <string name="btn_create">Create</string>
 
+    <string name="packing_label_list">List packing label</string>
+    <string name="packing_label">Packing label</string>
+    <string name="check">Inspect Goods</string>
+    <string name="check_samsung">Verify manually entered goods</string>
+    <string name="verify_box">Verify Box Label</string>
+    <string name="create">Create</string>
+    <string name="add">Add</string>
+    <string name="update">Update</string>
+    <string name="home">Home</string>
+    <string name="exit">Exit</string>
+    <string name="back">Back</string>
+    <string name="compare">Compare</string>
+    <string name="scanned_label_count" >Scanned label count:  </string>
+    <string name="create_chiyoda_label" >Create box label </string>
+    <string name="number_of_completed" > Number of completed </string>
+
 </resources>

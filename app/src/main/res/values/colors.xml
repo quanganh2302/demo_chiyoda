@@ -4,5 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="header_background">#000000</color>
     <color name="light_primary">#16A2F5</color>
+    <color name="gray">#DDDDDD</color>
 
 </resources>

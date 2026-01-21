@@ -25,6 +25,9 @@
         <activity
             android:name=".ui.activity_inspect.CreateMasterLabelActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.activity_compare.CompareActivity"
+            android:exported="false" />
 
     </application>
 
