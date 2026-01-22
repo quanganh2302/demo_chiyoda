@@ -42,5 +42,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
+    implementation("com.github.ahmmedrejowan.CuteToast:CuteToast:1.2")
 }
