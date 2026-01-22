@@ -36,11 +36,16 @@
             android:hint="@string/wo_no">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtWoNo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:focusable="false"
+                android:cursorVisible="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.example.myapplication.ui.custom.DateInputView
+            android:id="@+id/dateInputView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -48,16 +53,19 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilQty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="@string/qty">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtQty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
 
     </LinearLayout>

@@ -18,6 +18,15 @@
     <string name="qty">Số lượng</string>
     <string name="btn_create">Tạo</string>
 
+    // Log create master label
+    <string name="error_date_empty">Vui lòng chọn ngày</string>
+    <string name="error_qty_invalid">Số lượng phải lớn hơn 0</string>
+    <string name="unexpected_error">Đã xảy ra lỗi, vui lòng thử lại</string>
+
+    <string name="compare_success">So sánh thành công</string>
+    <string name="list_empty">Danh sách trống</string>
+
+
     <string name="packing_label_list" translatable="false">Danh sách nhãn đóng gói</string>
     <string name="packing_label" translatable="false">Nhãn đóng gói</string>
     <string name="check" translatable="false">Kiểm Hàng</string>
@@ -31,6 +40,7 @@
     <string name="back" translatable="false">Quay lại</string>
     <string name="compare" translatable="false">So sánh</string>
     <string name="scanned_label_count" translatable="false" >Số lượng nhãn đã quét: </string>
+    <string name="scanned_label_count_format">Số lượng nhãn đã quét: %1$d</string>
     <string name="create_chiyoda_label" translatable="false" > Tạo nhãn thùng </string>
     <string name="number_of_completed" translatable="false" > Số lượng hoàn thành </string>
 </resources>

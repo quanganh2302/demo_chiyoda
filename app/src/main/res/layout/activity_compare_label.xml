@@ -79,25 +79,25 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
+                    android:id="@+id/tvWoNoValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="TextView"/>
+                    android:gravity="center"/>
 
                 <TextView
+                    android:id="@+id/tvDateValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="TextView"/>
+                    android:gravity="center"/>
 
                 <TextView
+                    android:id="@+id/tvQtyValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="TextView"/>
+                    android:gravity="center"/>
             </LinearLayout>
 
             <View

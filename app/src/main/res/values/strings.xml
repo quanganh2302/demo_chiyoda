@@ -18,6 +18,14 @@
     <string name="qty">Qty</string>
     <string name="btn_create">Create</string>
 
+    <!-- Log create master label -->
+    <string name="error_date_empty">Please select a date</string>
+    <string name="error_qty_invalid">Quantity must be greater than 0</string>
+    <string name="unexpected_error">An error occurred. Please try again</string>
+
+    <string name="compare_success">Compare success</string>
+    <string name="list_empty">List is empty</string>
+
     <string name="packing_label_list">List packing label</string>
     <string name="packing_label">Packing label</string>
     <string name="check">Inspect Goods</string>
@@ -31,6 +39,8 @@
     <string name="back">Back</string>
     <string name="compare">Compare</string>
     <string name="scanned_label_count" >Scanned label count:  </string>
+    <string name="scanned_label_count_format">Scanned label count: %1$d</string>
+
     <string name="create_chiyoda_label" >Create box label </string>
     <string name="number_of_completed" > Number of completed </string>
 

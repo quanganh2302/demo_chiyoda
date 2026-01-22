@@ -1,61 +1,65 @@
 package com.example.myapplication.ui.activity_compare
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.databinding.ActivityCompareLabelBinding
 import com.example.myapplication.models.MasterLabelData
+import com.example.myapplication.ui.activity_inspect.CreateMasterLabelActivity
 import com.example.myapplication.ui.adapter.RecyclerViewAdapter
 import com.example.myapplication.ui.base.BaseActivity
-//import com.example.myapplication.ui.utils.ToastManager
 import com.rejowan.cutetoast.CuteToast
 
 class CompareActivity : BaseActivity() {
 
     override fun hasDrawer(): Boolean = false
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: ActivityCompareLabelBinding
     private lateinit var adapter: RecyclerViewAdapter
     private val productList = mutableListOf<MasterLabelData>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_compare_label)
 
-        recyclerView = findViewById(R.id.recyclerViewItems)
+        binding = ActivityCompareLabelBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        setupHeader()
         setupRecyclerView()
         setupButtons()
-        loadData()
     }
 
+    // ================= HEADER =================
+    private fun setupHeader() {
+        val data = MasterLabelData(
+            productCode = "",
+            wono = intent.getStringExtra(CreateMasterLabelActivity.EXTRA_WONO) ?: "",
+            date = intent.getStringExtra(CreateMasterLabelActivity.EXTRA_DATE) ?: "",
+            qty = intent.getIntExtra(CreateMasterLabelActivity.EXTRA_QTY, 0)
+        )
+
+        bindMasterLabel(data)
+    }
+
+    private fun bindMasterLabel(data: MasterLabelData) = with(binding) {
+        tvWoNoValue.text = data.wono
+        tvDateValue.text = data.date
+        tvQtyValue.text = data.qty.toString()
+    }
+
+    // ================= RECYCLERVIEW =================
     private fun setupRecyclerView() {
         adapter = RecyclerViewAdapter(productList) { position ->
-            // Kiểm tra position hợp lệ trước khi xóa
-            if (position >= 0 && position < productList.size) {
-                val deletedItem = productList[position]
+            if (position in productList.indices) {
                 productList.removeAt(position)
                 adapter.notifyItemRemoved(position)
 
-                // Cập nhật lại range của các items còn lại
-                if (position < productList.size) {
-                    adapter.notifyItemRangeChanged(position, productList.size - position)
-                }
-
-                CuteToast.ct(
-                this,
-                "Đã xóa thành công",
-                CuteToast.LENGTH_SHORT,
-                CuteToast.SUCCESS,
-                true
-                ).show()
+                updateScannedLabelCount()
 
                 if (productList.isEmpty()) {
                     CuteToast.ct(
                         this,
-                        "Danh sách trống",
+                        getString(com.example.myapplication.R.string.list_empty),
                         CuteToast.LENGTH_SHORT,
                         CuteToast.INFO,
                         true
@@ -64,38 +68,41 @@ class CompareActivity : BaseActivity() {
             }
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-    }
+        binding.recyclerViewItems.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewItems.adapter = adapter
 
-    private fun loadData() {
+        // Demo data (sau này thay bằng API / scan)
         productList.add(
-            MasterLabelData("ABC123", "456789", "24/04/2024", 100)
+            MasterLabelData("A01", "WO001", "01/01/2026", 10)
         )
         productList.add(
-            MasterLabelData("XYZ999", "888888", "25/04/2024", 200)
+            MasterLabelData("A02", "WO001", "01/01/2026", 20)
         )
         productList.add(
-            MasterLabelData("XYZ111", "888888", "25/04/2024", 200)
+            MasterLabelData("A03", "WO001", "01/01/2026", 20)
         )
 
         adapter.notifyDataSetChanged()
+
+        updateScannedLabelCount()
+    }
+    private fun updateScannedLabelCount() {
+        binding.bfRecyclerViewItems.text = getString(
+            R.string.scanned_label_count_format,
+            productList.size
+        )
     }
 
-    private fun setupButtons() {
-        val btnBack = findViewById<Button>(R.id.btnBack)
-        val btnCompare = findViewById<Button>(R.id.btnCompare)
-
-        btnBack.setOnClickListener {
-            finish()
-        }
+    // ================= BUTTONS =================
+    private fun setupButtons() = with(binding) {
+        btnBack.setOnClickListener { finish() }
 
         btnCompare.setOnClickListener {
             CuteToast.ct(
-                this,
-                "@string/compare_success",
+                this@CompareActivity,
+                getString(com.example.myapplication.R.string.compare_success),
                 CuteToast.LENGTH_SHORT,
-                CuteToast.ERROR,
+                CuteToast.SUCCESS,
                 true
             ).show()
         }

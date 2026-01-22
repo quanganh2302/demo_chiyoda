@@ -15,6 +15,9 @@ class HomeFragment : Fragment(R.layout.fragment_home){
 
         val btnKiemHang = view.findViewById<Button>(R.id.btnKiemHang)
 
+        val btnKiemNhan = view.findViewById<Button>(R.id.btnKiemNhan)
+
+
         btnKiemHang.setOnClickListener {
             val intent = Intent(
                 requireContext(),
@@ -22,5 +25,20 @@ class HomeFragment : Fragment(R.layout.fragment_home){
             )
             startActivity(intent)
         }
+
+        btnKiemNhan.setOnClickListener {
+
+            val hardCodeWono = "WO-2026-001"
+
+            val intent = Intent(
+                requireContext(),
+                CreateMasterLabelActivity::class.java
+            )
+
+            intent.putExtra("EXTRA_WONO", hardCodeWono)
+
+            startActivity(intent)
+        }
+
     }
 }

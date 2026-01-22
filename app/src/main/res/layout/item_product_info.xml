@@ -53,25 +53,22 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:orientation="vertical">
                 <!-- ROW -->
                 <TextView
-                    android:id="@+id/tvOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wo_no"
                     android:layout_marginTop="12dp"/>
 
                 <TextView
-                    android:id="@+id/tvDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
                     android:layout_marginTop="4dp"/>
 
                 <TextView
-                    android:id="@+id/tvQty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/qty"
@@ -107,28 +104,25 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:orientation="vertical">
                 <!-- ROW -->
                 <TextView
-                    android:id="@+id/tvItemCode"
+                    android:id="@+id/tvOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/wo_no"
                     android:layout_marginTop="12dp"/>
 
                 <TextView
-                    android:id="@+id/tvWONumber"
+                    android:id="@+id/tvDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ngày sản xuất: 24/04/2024"
                     android:layout_marginTop="4dp"/>
 
                 <TextView
-                    android:id="@+id/tvQuantity"
+                    android:id="@+id/tvQty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Số lượng: 100"
                     android:layout_marginTop="4dp"/>
             </LinearLayout>
 
