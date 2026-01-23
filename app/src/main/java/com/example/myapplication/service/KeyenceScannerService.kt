@@ -103,6 +103,13 @@ object KeyenceScannerService : ScanManager.DataListener {
     /* ===== CALLBACK FROM SDK ===== */
 
     override fun onDataReceived(result: DecodeResult) {
+
+        Log.d(
+            "KeyenceScanner",
+            "RAW_SCAN | result=${result.result} | codeType=${result.codeType ?: "N/A"} | data=${result.data ?: "<NO_DATA>"}"
+        )
+
+
         when (result.result) {
             DecodeResult.Result.SUCCESS -> {
                 _scanEventFlow.tryEmit(
@@ -114,28 +121,31 @@ object KeyenceScannerService : ScanManager.DataListener {
             }
 
             DecodeResult.Result.TIMEOUT -> {
+                Log.d("KeyenceScanner", "SCAN_TIMEOUT")
                 _scanEventFlow.tryEmit(ScanEvent.Timeout)
             }
 
             DecodeResult.Result.CANCELED -> {
+                Log.d("KeyenceScanner", "SCAN_CANCELED")
                 _scanEventFlow.tryEmit(ScanEvent.Canceled)
             }
 
             DecodeResult.Result.FAILED -> {
+                Log.e("KeyenceScanner", "SCAN_FAILED")
                 _scanEventFlow.tryEmit(
                     ScanEvent.Failed("Scan failed")
                 )
             }
 
             DecodeResult.Result.ALERT -> {
+                Log.w("KeyenceScanner", "SCAN_ALERT")
                 _scanEventFlow.tryEmit(ScanEvent.Alert)
             }
 
             else -> {
-                _scanEventFlow.tryEmit(
-                    ScanEvent.Failed("Unhandled result: ${result.result}")
-                )
+                Log.w("KeyenceScanner", "UNHANDLED_RESULT=${result.result}")
             }
         }
     }
+
 }

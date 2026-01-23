@@ -1,4 +1,4 @@
-package com.example.chiyoda_qc.data.models
+package com.example.myapplication.helper
 
 /**
  * Model biểu diễn QR Chiyoda

@@ -17,6 +17,12 @@
     <string name="date" translatable="false">Ngày sản xuất</string>
     <string name="qty">Số lượng</string>
     <string name="btn_create">Tạo</string>
+    <string name="validate_wono" translatable="false">Vui lòng nhập số Order</string>
+    <string name="scan_not_master">Mã quét không phải Master Label</string>
+    <string name="timeout_scan">Hết thời gian quét</string>
+    <string name="error_scan">Lỗi khi quét</string>
+    <string name="ocr_scan">Không hỗ trợ OCR</string>
+
 
     // Log create master label
     <string name="error_date_empty">Vui lòng chọn ngày</string>
