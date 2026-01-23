@@ -17,6 +17,12 @@
     <string name="date">Date</string>
     <string name="qty">Qty</string>
     <string name="btn_create">Create</string>
+    <string name="validate_wono">Please enter a Wo no</string>
+    <string name="scan_not_master">Scan not master label</string>
+    <string name="timeout_scan">Timeout scan</string>
+    <string name="error_scan">Error scan</string>
+    <string name="ocr_scan">Not support OCR</string>
+
 
     <!-- Log create master label -->
     <string name="error_date_empty">Please select a date</string>

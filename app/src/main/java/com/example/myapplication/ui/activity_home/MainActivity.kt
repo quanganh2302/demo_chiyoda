@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
+import com.example.myapplication.service.KeyenceScannerService
 import com.example.myapplication.ui.base.BaseActivity
 import com.example.myapplication.ui.model.DrawerAction
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity()
+{
 
     private lateinit var drawerLayout: DrawerLayout
 
