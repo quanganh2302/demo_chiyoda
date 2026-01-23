@@ -7,15 +7,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.models.MasterLabelData
+import com.example.myapplication.helper.PackingLabel
 
-class RecyclerViewAdapter (
-    private val items: MutableList<MasterLabelData>,
+class RecyclerViewAdapter(
+    private val items: MutableList<PackingLabel>,
     private val onDelete: (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
-
-    private var lastClickTime = 0L
-    private val CLICK_DELAY_MS = 500L
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvProductCode: TextView = view.findViewById(R.id.tvProductCode)
@@ -34,27 +31,18 @@ class RecyclerViewAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
 
-        holder.tvProductCode.text = item.productCode
-        holder.tvOrder.text = "${item.wono}"
-        holder.tvDate.text = "${item.date}"
-        holder.tvQty.text = "${item.qty}"
+        holder.tvProductCode.text = item.itemCode ?: "-"
+        holder.tvOrder.text = item.workOrderNo ?: "-"
+        holder.tvDate.text = item.date?.toString() ?: "-"
+        holder.tvQty.text = item.quantity.toString()
 
         holder.btnDelete.setOnClickListener {
-            val currentTime = System.currentTimeMillis()
-
-            if (currentTime - lastClickTime < CLICK_DELAY_MS) {
-                return@setOnClickListener
-            }
-
-            lastClickTime = currentTime
-
             val adapterPosition = holder.adapterPosition
-
-            if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < items.size) {
+            if (adapterPosition != RecyclerView.NO_POSITION) {
                 onDelete(adapterPosition)
             }
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 }

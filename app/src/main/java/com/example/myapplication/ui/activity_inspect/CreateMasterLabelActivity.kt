@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.rejowan.cutetoast.CuteToast
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-
+import com.example.myapplication.ultis.valid.MasterLabelValid
 class CreateMasterLabelActivity : BaseActivity() {
 
     override fun hasDrawer(): Boolean = false
@@ -142,7 +142,7 @@ class CreateMasterLabelActivity : BaseActivity() {
 
             is ScanEvent.Success -> {
                 val sanitized = sanitizeScanData(event.data)
-                if (isValidProductionCode(sanitized)) {
+                if (MasterLabelValid.isValid(sanitized)) {
                     edtWoNo.setText(sanitized)
                 } else {
                     showInfo(getString(R.string.scan_not_master))
@@ -174,15 +174,15 @@ class CreateMasterLabelActivity : BaseActivity() {
             .take(50)
     }
 
-    private fun isValidProductionCode(data: String): Boolean {
-        if (data.isEmpty()) return false
-        if (data.length > 50) return false
-        if (data.contains(",")) return false
-        if (data.contains("\n") || data.contains("\r") || data.contains("\t")) return false
-        if (data.startsWith("http") || data.startsWith("www")) return false
-        if (!data.matches(Regex("^[A-Za-z0-9-_]+$"))) return false
-        return true
-    }
+//    private fun isValidProductionCode(data: String): Boolean {
+//        if (data.isEmpty()) return false
+//        if (data.length > 50) return false
+//        if (data.contains(",")) return false
+//        if (data.contains("\n") || data.contains("\r") || data.contains("\t")) return false
+//        if (data.startsWith("http") || data.startsWith("www")) return false
+//        if (!data.matches(Regex("^[A-Za-z0-9-_]+$"))) return false
+//        return true
+//    }
 
     private fun safeParseInt(value: String): Int? {
         return try {

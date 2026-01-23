@@ -22,6 +22,8 @@
     <string name="timeout_scan">Hết thời gian quét</string>
     <string name="error_scan">Lỗi khi quét</string>
     <string name="ocr_scan">Không hỗ trợ OCR</string>
+    <string name="scan_not_packing">Mã quét không phải nhãn đóng gói</string>
+    <string name="label_already_scanned">Nhãn đã quét</string>
 
 
     // Log create master label

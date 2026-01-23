@@ -22,8 +22,8 @@
     <string name="timeout_scan">Timeout scan</string>
     <string name="error_scan">Error scan</string>
     <string name="ocr_scan">Not support OCR</string>
-
-
+    <string name="scan_not_packing">Scan not packing label</string>
+    <string name="label_already_scanned">Label already scanned</string>
     <!-- Log create master label -->
     <string name="error_date_empty">Please select a date</string>
     <string name="error_qty_invalid">Quantity must be greater than 0</string>
