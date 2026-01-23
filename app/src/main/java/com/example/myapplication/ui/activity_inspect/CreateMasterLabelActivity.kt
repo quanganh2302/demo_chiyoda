@@ -71,15 +71,15 @@ class CreateMasterLabelActivity : BaseActivity() {
         scanJob?.cancel()
         scanJob = null
     }
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-        Log.d("SCAN_RAW", "==== RAW INTENT START ====")
-        intent?.extras?.keySet()?.forEach { key ->
-            Log.d("SCAN_RAW", "$key = ${intent.extras?.get(key)}")
-        }
-        Log.d("SCAN_RAW", "==== RAW INTENT END ====")
-    }
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//
+//        Log.d("SCAN_RAW", "==== RAW INTENT START ====")
+//        intent?.extras?.keySet()?.forEach { key ->
+//            Log.d("SCAN_RAW", "$key = ${intent.extras?.get(key)}")
+//        }
+//        Log.d("SCAN_RAW", "==== RAW INTENT END ====")
+//    }
     // ================= INIT =================
 
     private fun bindViews() {
