@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MyApplication" >
         <!-- MAIN -->
         <activity
-            android:name=".ui.activity_home.MainActivity"
+            android:name=".ui.base.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,10 +24,10 @@
 
         <!-- INSPECT -->
         <activity
-            android:name=".ui.fragment_inspect.CreateMasterLabelFragment"
+            android:name=".ui.fragments.CreateMasterLabelFragment"
             android:exported="false" />
         <activity
-            android:name=".ui.fragment_compare.CompareFragment"
+            android:name=".ui.fragments.CompareFragment"
             android:exported="false" />
 
     </application>

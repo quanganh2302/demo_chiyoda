@@ -7,8 +7,10 @@ import com.keyence.autoid.sdk.scan.DecodeResult
 import com.keyence.autoid.sdk.scan.ScanManager
 import com.keyence.autoid.sdk.scan.scanparams.CodeType
 import com.keyence.autoid.sdk.scan.scanparams.DataOutput
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.withContext
 
 /**
  * Scanner Service dùng chung cho toàn app
@@ -29,22 +31,27 @@ object KeyenceScannerService : ScanManager.DataListener {
 
     /* ===== INIT ===== */
 
-    fun initialize(context: Context) {
+    suspend fun initialize(context: Context) {
         if (isInitialized) return
 
-        try {
-            scanManager = ScanManager.createScanManager(context.applicationContext)
-            scanManager?.addDataListener(this)
+        withContext(Dispatchers.Main) {  // ✅ ĐỔI THÀNH Main
+            try {
+                scanManager = ScanManager.createScanManager(
+                    context.applicationContext
+                )
+                scanManager?.addDataListener(this@KeyenceScannerService)
 
-            configureScanTypes()
-            configureDataOutput()
+                configureScanTypes()
+                configureDataOutput()
 
-            isInitialized = true
-            Log.i(TAG, "Scanner initialized successfully")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to initialize scanner", e)
+                isInitialized = true
+                Log.i(TAG, "Scanner initialized successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to initialize scanner", e)
+            }
         }
     }
+
 
     /* ===== CONFIG ===== */
 

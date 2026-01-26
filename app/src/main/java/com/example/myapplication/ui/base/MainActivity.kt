@@ -1,10 +1,9 @@
-package com.example.myapplication.ui.activity_home
+package com.example.myapplication.ui.base
 
 import android.os.Bundle
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.myapplication.R
-import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.ui.activity_home.HomeFragment
+import com.example.myapplication.ui.fragments.HomeFragment
 
 class MainActivity : BaseActivity() {
 
@@ -37,4 +36,3 @@ class MainActivity : BaseActivity() {
         drawerLayout.closeDrawers()
     }
 }
-

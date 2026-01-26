@@ -33,7 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:text="@string/item_code"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"/>
@@ -53,14 +53,14 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="5.5"
                 android:orientation="vertical">
                 <!-- ROW -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wo_no"
-                    android:layout_marginTop="12dp"/>
+                    android:layout_marginTop="6dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text=":"
-                    android:layout_marginTop="12dp"/>
+                    android:layout_marginTop="6dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -104,14 +104,14 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
+                android:layout_weight="5.5"
                 android:orientation="vertical">
                 <!-- ROW -->
                 <TextView
                     android:id="@+id/tvOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"/>
+                    android:layout_marginTop="6dp"/>
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="end"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="Xóa"
             android:backgroundTint="@android:color/holo_red_dark"
             android:textColor="@android:color/white"/>

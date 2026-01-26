@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.helper.PackingLabel
+import com.example.myapplication.ui.utils.DateUiFormatter
 
 class RecyclerViewAdapter(
     private val items: MutableList<PackingLabel>,
@@ -33,7 +34,7 @@ class RecyclerViewAdapter(
 
         holder.tvProductCode.text = item.itemCode ?: "-"
         holder.tvOrder.text = item.workOrderNo ?: "-"
-        holder.tvDate.text = item.date?.toString() ?: "-"
+        holder.tvDate.text = DateUiFormatter.format(item.date) ?: "-"
         holder.tvQty.text = item.quantity.toString()
 
         holder.btnDelete.setOnClickListener {

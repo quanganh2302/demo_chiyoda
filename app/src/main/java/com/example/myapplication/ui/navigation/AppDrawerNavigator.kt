@@ -2,8 +2,8 @@ package com.example.myapplication.ui.navigation
 
 import androidx.fragment.app.FragmentActivity
 import com.example.myapplication.R
-import com.example.myapplication.ui.activity_home.HomeFragment
-import com.example.myapplication.ui.fragment_setting.SettingsFragment
+import com.example.myapplication.ui.fragments.HomeFragment
+import com.example.myapplication.ui.fragments.SettingsFragment
 import com.example.myapplication.ui.model.DrawerAction
 
 class AppDrawerNavigator(

@@ -7,7 +7,9 @@ import android.widget.LinearLayout
 import com.example.myapplication.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.text.DateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class DateInputView @JvmOverloads constructor(
     context: Context,
@@ -24,7 +26,7 @@ class DateInputView @JvmOverloads constructor(
         tilDate = findViewById(R.id.tilDate)
         edtDate = findViewById(R.id.edtDate)
 
-        // Read Custom Attribute
+        // Read custom attribute
         attrs?.let {
             val ta = context.obtainStyledAttributes(it, R.styleable.DateInputView)
             tilDate.hint = ta.getString(R.styleable.DateInputView_hint)
@@ -38,10 +40,20 @@ class DateInputView @JvmOverloads constructor(
         edtDate.setOnClickListener {
             val calendar = Calendar.getInstance()
 
+            val locale: Locale =
+                context.resources.configuration.locales[0]
+
+            val dateFormat: DateFormat =
+                DateFormat.getDateInstance(DateFormat.SHORT, locale)
+
             DatePickerDialog(
                 context,
-                { _, y, m, d ->
-                    edtDate.setText("%02d/%02d/%04d".format(d, m + 1, y))
+                { _, year, month, dayOfMonth ->
+                    val selectedCal = Calendar.getInstance().apply {
+                        set(year, month, dayOfMonth)
+                    }
+
+                    edtDate.setText(dateFormat.format(selectedCal.time))
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -56,4 +68,3 @@ class DateInputView @JvmOverloads constructor(
 
     fun getDate(): String = edtDate.text.toString()
 }
-
