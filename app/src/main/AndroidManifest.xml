@@ -24,10 +24,10 @@
 
         <!-- INSPECT -->
         <activity
-            android:name=".ui.activity_inspect.CreateMasterLabelActivity"
+            android:name=".ui.fragment_inspect.CreateMasterLabelFragment"
             android:exported="false" />
         <activity
-            android:name=".ui.activity_compare.CompareActivity"
+            android:name=".ui.fragment_compare.CompareFragment"
             android:exported="false" />
 
     </application>

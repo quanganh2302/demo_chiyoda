@@ -11,10 +11,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 /**
- * 🔥 Scanner Service dùng chung cho toàn app
- * - Giữ DUY NHẤT 1 ScanManager
- * - Che giấu hoàn toàn Keyence SDK
- * - Các màn hình chỉ SUBSCRIBE kết quả
+ * Scanner Service dùng chung cho toàn app
  */
 object KeyenceScannerService : ScanManager.DataListener {
 

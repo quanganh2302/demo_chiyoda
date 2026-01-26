@@ -1,44 +1,53 @@
 package com.example.myapplication.ui.activity_home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
-import com.example.myapplication.ui.activity_inspect.CreateMasterLabelActivity
+import com.example.myapplication.ui.fragment_inspect.CreateMasterLabelFragment
 
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-class HomeFragment : Fragment(R.layout.fragment_home){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val btnKiemHang = view.findViewById<Button>(R.id.btnKiemHang)
-
         val btnKiemNhan = view.findViewById<Button>(R.id.btnKiemNhan)
 
-
+        // ===== KIỂM HÀNG (không truyền dữ liệu) =====
         btnKiemHang.setOnClickListener {
-            val intent = Intent(
-                requireContext(),
-                CreateMasterLabelActivity::class.java
-            )
-            startActivity(intent)
+            openCreateMasterLabel()
         }
 
+        // ===== KIỂM NHẬN (có sẵn WO) =====
         btnKiemNhan.setOnClickListener {
+            openCreateMasterLabelWithWono("WO-2026-001")
+        }
+    }
 
-            val hardCodeWono = "WO-2026-001"
+    // ================= NAVIGATION =================
 
-            val intent = Intent(
-                requireContext(),
-                CreateMasterLabelActivity::class.java
+    private fun openCreateMasterLabel() {
+        parentFragmentManager.beginTransaction()
+            .replace(
+                R.id.fragment_container,
+                CreateMasterLabelFragment()
             )
+            .addToBackStack(null)
+            .commit()
+    }
 
-            intent.putExtra("EXTRA_WONO", hardCodeWono)
-
-            startActivity(intent)
+    private fun openCreateMasterLabelWithWono(wono: String) {
+        val fragment = CreateMasterLabelFragment().apply {
+            arguments = Bundle().apply {
+                putString(CreateMasterLabelFragment.EXTRA_WONO, wono)
+            }
         }
 
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
