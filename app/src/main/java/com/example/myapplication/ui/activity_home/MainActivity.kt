@@ -2,14 +2,11 @@ package com.example.myapplication.ui.activity_home
 
 import android.os.Bundle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import com.example.myapplication.R
-import com.example.myapplication.service.KeyenceScannerService
 import com.example.myapplication.ui.base.BaseActivity
-import com.example.myapplication.ui.model.DrawerAction
+import com.example.myapplication.ui.activity_home.HomeFragment
 
-class MainActivity : BaseActivity()
-{
+class MainActivity : BaseActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
 
@@ -20,18 +17,24 @@ class MainActivity : BaseActivity()
         setContentView(R.layout.activity_main)
 
         drawerLayout = findViewById(R.id.drawerLayout)
-
         attachHeader()
 
         if (savedInstanceState == null) {
-            drawerNavigator.navigate(DrawerAction.HOME)
+            supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.fragment_container,
+                    HomeFragment()
+                )
+                .commit()
         }
     }
 
     override fun onMenuClicked() {
         drawerLayout.open()
     }
+
     override fun onAfterDrawerNavigate() {
         drawerLayout.closeDrawers()
     }
 }
+

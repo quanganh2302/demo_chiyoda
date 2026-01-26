@@ -1,11 +1,9 @@
 package com.example.myapplication.ui.navigation
 
-import android.app.Activity
-import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.example.myapplication.R
 import com.example.myapplication.ui.activity_home.HomeFragment
-import com.example.myapplication.ui.activity_setting.SettingsFragment
+import com.example.myapplication.ui.fragment_setting.SettingsFragment
 import com.example.myapplication.ui.model.DrawerAction
 
 class AppDrawerNavigator(
