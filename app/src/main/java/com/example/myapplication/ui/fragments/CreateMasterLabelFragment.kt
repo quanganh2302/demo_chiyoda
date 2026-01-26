@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragment_inspect
+package com.example.myapplication.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.R
 import com.example.myapplication.models.MasterLabelData
-import com.example.myapplication.service.KeyenceScannerService
+import com.example.myapplication.service.ScannerConfig
 import com.example.myapplication.service.ScanEvent
-import com.example.myapplication.ui.fragment_compare.CompareFragment
 import com.example.myapplication.ui.custom.DateInputView
-import com.example.myapplication.ultis.common.ToastManager
+import com.example.myapplication.ui.utils.ToastManager
 import com.example.myapplication.ultis.valid.MasterLabelValid
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class CreateMasterLabelFragment : Fragment() {
 
@@ -35,6 +37,7 @@ class CreateMasterLabelFragment : Fragment() {
     private lateinit var edtQty: TextInputEditText
     private lateinit var dateInputView: DateInputView
     private lateinit var btnCreate: Button
+    private var btnDebug: Button? = null
 
     // ================= SCAN =================
     private var scanJob: Job? = null
@@ -59,7 +62,6 @@ class CreateMasterLabelFragment : Fragment() {
         bindViews(view)
         setupActions()
 
-        // Nhận WONO nếu đi từ HomeFragment (Kiểm nhận)
         arguments?.getString(EXTRA_WONO)?.let {
             edtWoNo.setText(it)
         }
@@ -68,8 +70,10 @@ class CreateMasterLabelFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         scanJob = viewLifecycleOwner.lifecycleScope.launch {
-            KeyenceScannerService.scanEventFlow.collect {
-                handleScanEvent(it)
+            ScannerConfig.initialize(requireContext())
+
+            ScannerConfig.scanEventFlow.collect { event ->
+                handleScanEvent(event)
             }
         }
     }
@@ -87,11 +91,16 @@ class CreateMasterLabelFragment : Fragment() {
         edtQty = view.findViewById(R.id.edtQty)
         dateInputView = view.findViewById(R.id.dateInputView)
         btnCreate = view.findViewById(R.id.btnCreate)
+        btnDebug = view.findViewById(R.id.btnDebug)
     }
 
     private fun setupActions() {
         btnCreate.setOnClickListener {
             createMasterLabel()
+        }
+
+        btnDebug?.setOnClickListener {
+            mockScanWO()
         }
     }
 
@@ -100,7 +109,7 @@ class CreateMasterLabelFragment : Fragment() {
     private fun createMasterLabel() {
         val wono = edtWoNo.text?.toString()?.trim().orEmpty()
         val qtyText = edtQty.text?.toString()?.trim().orEmpty()
-        val date = dateInputView.getDate().trim()
+        val dateText = dateInputView.getDate().trim()
 
         if (wono.isEmpty()) {
             ToastManager.info(requireContext(), getString(R.string.validate_wono))
@@ -113,21 +122,38 @@ class CreateMasterLabelFragment : Fragment() {
             return
         }
 
-        if (date.isEmpty()) {
+        if (dateText.isEmpty()) {
             ToastManager.info(requireContext(), getString(R.string.error_date_empty))
             return
         }
 
+        // Parse date từ UI format sang LocalDate
+        val localDate = runCatching {
+            LocalDate.parse(
+                dateText,
+                DateTimeFormatter
+                    .ofLocalizedDate(java.time.format.FormatStyle.SHORT)
+                    .withLocale(Locale.getDefault())
+            )
+        }.getOrNull()
+
+        if (localDate == null) {
+            ToastManager.error(requireContext(), getString(R.string.error_date_invalid))
+            return
+        }
+
+        // Convert LocalDate sang ISO format string (yyyy-MM-dd)
+        val isoDate = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+
         val masterLabel = MasterLabelData(
             productCode = "DEMO_PRODUCT",
             wono = wono,
-            date = date,
+            date = isoDate,  // Truyền ISO format: "2026-01-26"
             qty = qty
         )
 
         Log.d(TAG, "Create master label: $masterLabel")
 
-        // 👉 CHUYỂN SANG BƯỚC TIẾP THEO (CompareFragment)
         goToCompare(masterLabel)
     }
 
@@ -135,13 +161,13 @@ class CreateMasterLabelFragment : Fragment() {
         val fragment = CompareFragment().apply {
             arguments = Bundle().apply {
                 putString(EXTRA_WONO, master.wono)
-                putString(EXTRA_DATE, master.date)
+                putString(EXTRA_DATE, master.date)  // ISO format
                 putInt(EXTRA_QTY, master.qty)
             }
         }
 
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment) // ⚠️ đúng container
+            .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
     }
@@ -183,5 +209,10 @@ class CreateMasterLabelFragment : Fragment() {
             .replace("\n", "")
             .replace("\t", "")
             .take(50)
+    }
+
+    private fun mockScanWO() {
+        val mockData = "WOA00902735"
+        handleScanEvent(ScanEvent.Success(data = mockData, codeType = "QR_CODE"))
     }
 }

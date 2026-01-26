@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragment_setting
+package com.example.myapplication.ui.fragments
 
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
