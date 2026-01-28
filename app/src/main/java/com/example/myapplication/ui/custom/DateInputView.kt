@@ -67,4 +67,7 @@ class DateInputView @JvmOverloads constructor(
     }
 
     fun getDate(): String = edtDate.text.toString()
+    fun clearDate() {
+        edtDate.setText("")
+    }
 }
