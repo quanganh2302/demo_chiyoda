@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.SharedFlow
  */
 object ScannerConfig {
 
-    private const val TAG = "ScannerConfig"  // 🔥 THÊM TAG ĐỂ DEBUG
+    private const val TAG = "ScannerConfig"
 
     // ⚙️ Đổi flag này để switch giữa real/mock scanner
-    private const val USE_MOCK_SCANNER = false // ✅ true = mock (không cần thiết bị), false = real
+    private const val USE_MOCK_SCANNER = false // ✅ true = mock , false = real
 
     suspend fun initialize(context: Context) {
         // 🔥 THÊM LOG ĐỂ KIỂM TRA

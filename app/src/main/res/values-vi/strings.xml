@@ -25,6 +25,8 @@
     <string name="scan_not_packing">Mã quét không phải nhãn đóng gói</string>
     <string name="label_already_scanned">Nhãn đã quét</string>
     <string name="not_match_wo_no" translatable="false">Số Order không khớp với nhãn tổng</string>
+    <string name="not_match_date">Ngày sản xuất không khớp với nhãn tổng</string>
+
     <string name="error_date_invalid">Vui lòng nhập ngày đúng định dạng </string>
 
     // Log create master label
@@ -35,7 +37,7 @@
     <string name="compare_success">So sánh thành công</string>
     <string name="list_empty">Danh sách trống</string>
 
-
+    <string name="success" translatable="false">Thành công</string>
     <string name="packing_label_list" translatable="false">Danh sách nhãn </string>
     <string name="packing_label" translatable="false">Nhãn đóng gói</string>
     <string name="check" translatable="false">Kiểm Hàng</string>

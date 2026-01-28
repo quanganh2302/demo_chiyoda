@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -57,6 +58,7 @@ class CompareFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCompareLabelBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -78,6 +80,7 @@ class CompareFragment : Fragment() {
                 scannedLabels.clear()
                 scannedLabels.addAll(restored as List<PackingLabel>)
                 adapter.notifyDataSetChanged()
+                updateScannedLabelCount()
             }
 
         setupButtons()
@@ -147,16 +150,19 @@ class CompareFragment : Fragment() {
             is ScanEvent.Success -> handleScanSuccess(event.data)
             ScanEvent.Timeout ->
                 ToastManager.info(requireContext(), getString(R.string.timeout_scan))
+
             ScanEvent.Alert ->
                 ToastManager.info(requireContext(), getString(R.string.ocr_scan))
+
             is ScanEvent.Failed ->
                 ToastManager.error(requireContext(), event.reason)
+
             ScanEvent.Canceled -> Unit
         }
     }
 
     private fun handleScanSuccess(rawData: String) {
-        if(isDialogShowing) return
+        if (isDialogShowing) return
         Log.d(TAG, "HANDLE_SUCCESS | raw=$rawData")
 
         val packingLabel = PackingLabel.fromQrCodeData(rawData)
@@ -165,9 +171,17 @@ class CompareFragment : Fragment() {
             return
         }
 
-        if(packingLabel.workOrderNo != masterLabel?.wono) {
+        if (packingLabel.workOrderNo != masterLabel?.wono) {
             isDialogShowing = true
             ToastManager.warning(requireContext(), getString(R.string.not_match_wo_no))
+            view?.postDelayed({ isDialogShowing = false }, 800)
+            playWarningSound()
+            return
+        }
+
+        if (packingLabel.date.toString() != masterLabel?.date) {
+            isDialogShowing = true
+            ToastManager.warning(requireContext(), getString(R.string.not_match_date))
             view?.postDelayed({ isDialogShowing = false }, 800)
             playWarningSound()
             return
@@ -219,12 +233,67 @@ class CompareFragment : Fragment() {
 
     private fun setupButtons() = with(binding) {
         btnBack.setOnClickListener {
-            mockScanPackingLabel()
+//            mockScanPackingLabel()
+            parentFragmentManager.popBackStack()
         }
 
         btnCompare.setOnClickListener {
-            ToastManager.success(requireContext(), getString(R.string.compare_success))
+            compareLabels()
         }
+    }
+
+    private fun compareLabels() {
+        if (scannedLabels.isEmpty()) {
+            ToastManager.warning(requireContext(), getString(R.string.list_empty))
+            return
+        }
+
+        val totalQuan = scannedLabels.sumOf { it.quantity ?: 0 }
+        if (totalQuan == masterLabel?.qty) {
+            ToastManager.success(requireContext(), getString(R.string.compare_success))
+            showSuccessDialogWithOptions()
+        } else {
+            ToastManager.warning(requireContext(), getString(R.string.error_qty_invalid))
+            playWarningSound()
+        }
+    }
+
+    private fun showSuccessDialogWithOptions() {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle(R.string.success)
+            .setMessage(R.string.compare_success)
+            .setCancelable(false)
+            .setPositiveButton(getText(R.string.create_chiyoda_label)) { dialog, _ ->
+                dialog.dismiss()
+                nagativeToCHiYodaLabel()
+            }
+            .setNegativeButton(getText(R.string.back)) { dialog, _ ->
+                dialog.dismiss()
+                parentFragmentManager.setFragmentResult(
+                    "clear_data_request",
+                    Bundle().apply {
+                        putBoolean("should_clear", true)
+                    }
+                )
+
+                parentFragmentManager.popBackStack()
+            }
+            .create()
+        dialog.show()
+    }
+
+    private fun nagativeToCHiYodaLabel() {
+//        if (!com.example.myapplication.manager.RpaErrorManager.canAccessQcChiyoda()) {
+//            // Hiển thị dialog cảnh báo
+//            com.example.myapplication.manager.RpaErrorManager.showRpaErrorDialog(requireContext())
+//            ToastCommon.showWarning(
+//                requireContext(),
+//                "Cannot access QC Chiyoda due to RPA error. Please contact administrator."
+//            )
+//            return
+//        }
+
+
     }
 
     private fun mockScanPackingLabel() {

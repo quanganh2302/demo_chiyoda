@@ -25,6 +25,7 @@
     <string name="scan_not_packing">Scan not packing label</string>
     <string name="label_already_scanned">Label already scanned</string>
     <string name="not_match_wo_no">Wo no not match master label</string>
+    <string name="not_match_date">Date not match master label</string>
     <string name="error_date_invalid">Enter a valid date </string>
     <!-- Log create master label -->
     <string name="error_date_empty">Please select a date</string>
@@ -34,6 +35,7 @@
     <string name="compare_success">Compare success</string>
     <string name="list_empty">List is empty</string>
 
+    <string name="success" translatable="false">Success</string>
     <string name="packing_label_list">List packing label</string>
     <string name="packing_label">Packing label</string>
     <string name="check">Inspect Goods</string>

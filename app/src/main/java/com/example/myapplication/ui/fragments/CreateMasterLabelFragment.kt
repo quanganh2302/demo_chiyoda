@@ -65,6 +65,15 @@ class CreateMasterLabelFragment : Fragment() {
         arguments?.getString(EXTRA_WONO)?.let {
             edtWoNo.setText(it)
         }
+
+        parentFragmentManager.setFragmentResultListener(
+            "clear_data_request",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            if (bundle.getBoolean("should_clear", false)) {
+                clearAllInputFields()
+            }
+        }
     }
 
     override fun onStart() {
@@ -202,6 +211,12 @@ class CreateMasterLabelFragment : Fragment() {
     }
 
     // ================= UTIL =================
+
+    private fun clearAllInputFields() {
+        edtWoNo.setText("")
+        edtQty.setText("")
+        dateInputView.clearDate()
+    }
 
     private fun sanitizeScanData(data: String): String {
         return data.trim()
