@@ -14,6 +14,7 @@ import com.example.myapplication.service.ScannerConfig
 import com.example.myapplication.service.ScanEvent
 import com.example.myapplication.ui.custom.DateInputView
 import com.example.myapplication.ui.utils.ToastManager
+import com.example.myapplication.ui.utils.contants.BundleKeys
 import com.example.myapplication.ultis.valid.MasterLabelValid
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Job
@@ -25,10 +26,6 @@ import java.util.Locale
 class CreateMasterLabelFragment : Fragment() {
 
     companion object {
-        const val EXTRA_WONO = "EXTRA_WONO"
-        const val EXTRA_DATE = "EXTRA_DATE"
-        const val EXTRA_QTY = "EXTRA_QTY"
-
         private const val TAG = "CreateMasterLabelFragment"
     }
 
@@ -62,7 +59,7 @@ class CreateMasterLabelFragment : Fragment() {
         bindViews(view)
         setupActions()
 
-        arguments?.getString(EXTRA_WONO)?.let {
+        arguments?.getString(BundleKeys.EXTRA_WONO)?.let {
             edtWoNo.setText(it)
         }
 
@@ -100,7 +97,7 @@ class CreateMasterLabelFragment : Fragment() {
         edtQty = view.findViewById(R.id.edtQty)
         dateInputView = view.findViewById(R.id.dateInputView)
         btnCreate = view.findViewById(R.id.btnCreate)
-        btnDebug = view.findViewById(R.id.btnDebug)
+        btnDebug = view.findViewById(R.id.btnBack)
     }
 
     private fun setupActions() {
@@ -169,9 +166,9 @@ class CreateMasterLabelFragment : Fragment() {
     private fun goToCompare(master: MasterLabelData) {
         val fragment = CompareFragment().apply {
             arguments = Bundle().apply {
-                putString(EXTRA_WONO, master.wono)
-                putString(EXTRA_DATE, master.date)  // ISO format
-                putInt(EXTRA_QTY, master.qty)
+                putString(BundleKeys.EXTRA_WONO, master.wono)
+                putString(BundleKeys.EXTRA_DATE, master.date)  // ISO format
+                putInt(BundleKeys.EXTRA_QTY, master.qty)
             }
         }
 

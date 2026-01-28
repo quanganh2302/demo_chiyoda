@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="packing_types">
+        <item>@string/packing_type_1</item>
+        <item>@string/packing_type_2</item>
+        <item>@string/packing_type_3</item>
+        <item>@string/packing_type_4</item>
+        <item>@string/packing_type_5</item>
+    </string-array>
+</resources>

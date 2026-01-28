@@ -15,21 +15,13 @@
         <!-- MAIN -->
         <activity
             android:name=".ui.base.MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <!-- INSPECT -->
-        <activity
-            android:name=".ui.fragments.CreateMasterLabelFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.fragments.CompareFragment"
-            android:exported="false" />
-
     </application>
 
 </manifest>

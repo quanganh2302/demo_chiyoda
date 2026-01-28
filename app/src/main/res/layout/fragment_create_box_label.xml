@@ -12,7 +12,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/master_label"
+        android:text="@string/create_box_label"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,44 @@
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <!-- Dropdown  -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCategory"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/category">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:cursorVisible="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Khoảng cách -->
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="1dp" />
+
+            <!-- Checkbox -->
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/completed"
+                android:textSize="14sp" />
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -95,12 +132,12 @@
             android:layout_height="1dp"/>
 
         <Button
-            android:id="@+id/btnCreate"
+            android:id="@+id/btnContinue"
             android:layout_width="120dp"
             android:layout_height="48dp"
             android:textSize="16sp"
             android:background="@drawable/bg_btn_primary"
-            android:text="@string/compare"/>
+            android:text="@string/continue_tt"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

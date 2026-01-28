@@ -15,7 +15,7 @@
     <string name="wo_no">Wo no</string>
     <string name="item_code">Item code</string>
     <string name="date">Date</string>
-    <string name="qty">Qty</string>
+    <string name="qty">Quantity</string>
     <string name="btn_create">Create</string>
     <string name="validate_wono">Please enter a Wo no</string>
     <string name="scan_not_master">Scan not master label</string>
@@ -52,6 +52,26 @@
     <string name="scanned_label_count_format">Scanned label count: %1$d</string>
 
     <string name="create_chiyoda_label" >Create box label </string>
-    <string name="number_of_completed" > Number of completed </string>
+
+    // Create box label
+    <string name="create_box_label" >Create box label </string>
+    <string name="category">Category</string>
+    <string name="packing_type_1">Package</string>
+    <string name="packing_type_2">Carton Box</string>
+    <string name="packing_type_3">Plastic Bag</string>
+    <string name="packing_type_4">Paper Pack</string>
+    <string name="packing_type_5">Others</string>
+    <string name="completed">Completed</string>
+    <string name="continue_tt">Continue</string>
+
+    // Print label
+    <string name="package_allocation">Package allocation</string>
+    <string name="print_label">Print label</string>
+    <string name="number_of_completed">Number of completed</string>
+    <string name="products_per_box">Products per box</string>
+    <string name="auto">Auto</string>
+    <string name="number_of_box">Number of box</string>
+    <string name="list_boxes">List boxes:</string>
+"
 
 </resources>
