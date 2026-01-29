@@ -53,5 +53,35 @@
     <string name="scanned_label_count" translatable="false" >Số nhãn đã quét: </string>
     <string name="scanned_label_count_format">Số lượng nhãn đã quét: %1$d</string>
     <string name="create_chiyoda_label" translatable="false" > Tạo nhãn thùng </string>
+
+    // Create box label
+    <string name="create_box_label" translatable="false" > Tạo nhãn thùng </string>
+    <string name="category" translatable="false" > Chọn kiểu </string>
+    <string name="packing_type_1" translatable="false" > Kiện </string>
+    <string name="packing_type_2" translatable="false" > Hộp bìa </string>
+    <string name="packing_type_3" translatable="false" > Bao ni-lon </string>
+    <string name="packing_type_4" translatable="false" > Gói giấy </string>
+    <string name="packing_type_5" translatable="false" > Khác </string>
+    <string name="completed" translatable="false" > Hoàn thành </string>
+    <string name="continue_tt" translatable="false" > Tiếp tục </string>
+
+    // Print label
+    <string name="package_allocation" translatable="false" > Sắp xếp thùng hàng </string>
+    <string name="print_label" translatable="false" > In nhãn </string>
     <string name="number_of_completed" translatable="false" > Số lượng hoàn thành </string>
+    <string name="products_per_box" translatable="false" > Số sản phẩm mỗi thùng </string>
+    <string name="auto" translatable="false" > Tự động </string>
+    <string name="number_of_box" translatable="false" >Số thùng</string>
+    <string name="list_boxes" translatable="false" >Danh sách thùng:</string>
+    <string name="enter_product_per_box" translatable="false">Vui lòng nhập số sản phẩm mỗi thùng</string>
+    <string name="enter_number_of_box" translatable="false">Vui lòng nhập số lượng thùng</string>
+    <string name="product" translatable="false">Sản phẩm</string>
+
+    <string name="toast_invalid_completed_count" translatable="false">Vui lòng nhập số lượng hoàn thành hợp lệ</string>
+    <string name="toast_invalid_packing_quantity" translatable="false">Vui lòng nhập số lượng đóng gói hợp lệ</string>
+    <string name="toast_no_packing_quantity" translatable="false">Vui lòng nhập số lượng đóng gói </string>
+    <string name="toast_boxes_created_with_remaining" translatable="false">Đã tạo %1$d %2$s đầy (%3$d sản phẩm mỗi thùng) + 1 thùng với %4$d sản phẩm</string>
+    <string name="toast_boxes_created_full" translatable="false">Đã tạo %1$d %2$s với %3$d sản phẩm mỗi thùng</string>
+    <string name="toast_no_boxes" translatable="false">Không có thùng để in</string>
+
 </resources>

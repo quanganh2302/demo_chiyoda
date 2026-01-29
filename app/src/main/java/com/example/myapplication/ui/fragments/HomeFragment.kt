@@ -19,7 +19,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         btnKiemNhan.setOnClickListener {
-            openCreateMasterLabelWithWono("WO-2026-001")
+//            openCreateMasterLabelWithWono("WO-2026-001")
         }
     }
 
@@ -35,16 +35,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .commit()
     }
 
-    private fun openCreateMasterLabelWithWono(wono: String) {
-        val fragment = CreateMasterLabelFragment().apply {
-            arguments = Bundle().apply {
-                putString(CreateMasterLabelFragment.EXTRA_WONO, wono)
-            }
-        }
 
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
 }

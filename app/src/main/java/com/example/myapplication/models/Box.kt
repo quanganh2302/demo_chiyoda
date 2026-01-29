@@ -15,7 +15,7 @@ data class Box(
     val numberBox: Int = 0,
 
     /** Số lượng sản phẩm trong box */
-    val count: Long = 0L
+    var count: Long = 0L
 
 ) : Parcelable {
 

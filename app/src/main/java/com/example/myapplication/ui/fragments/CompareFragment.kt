@@ -18,6 +18,7 @@ import com.example.myapplication.service.ScannerConfig
 import com.example.myapplication.ui.adapter.RecyclerViewAdapter
 import com.example.myapplication.ui.utils.DateUiFormatter
 import com.example.myapplication.ui.utils.ToastManager
+import com.example.myapplication.ui.utils.contants.BundleKeys
 import com.keyence.autoid.sdk.notification.Notification
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -26,9 +27,6 @@ import java.time.LocalDate
 class CompareFragment : Fragment() {
 
     companion object {
-        const val EXTRA_WONO = "EXTRA_WONO"
-        const val EXTRA_DATE = "EXTRA_DATE"
-        const val EXTRA_QTY = "EXTRA_QTY"
         private const val TAG = "CompareFragment"
     }
 
@@ -37,7 +35,6 @@ class CompareFragment : Fragment() {
 
     private lateinit var adapter: RecyclerViewAdapter
     private val scannedLabels = mutableListOf<PackingLabel>()
-
     private var scanJob: Job? = null
     private var isDialogShowing = false
     private var masterLabel: MasterLabelData? = null
@@ -72,7 +69,6 @@ class CompareFragment : Fragment() {
         // Việc này sẽ chạy lại mỗi khi view được tạo, sử dụng Locale mới nhất
         masterLabel?.let { bindMasterLabel(it) }
 
-        setupRecyclerView()
 
         savedInstanceState
             ?.getSerializable("SCANNED_LABELS")
@@ -82,6 +78,7 @@ class CompareFragment : Fragment() {
                 adapter.notifyDataSetChanged()
                 updateScannedLabelCount()
             }
+        setupRecyclerView()
 
         setupButtons()
     }
@@ -117,13 +114,13 @@ class CompareFragment : Fragment() {
     }
 
     private fun setupMasterLabelData() {
-        val isoDate = arguments?.getString(EXTRA_DATE).orEmpty()
+        val isoDate = arguments?.getString(BundleKeys.EXTRA_DATE).orEmpty()
 
         masterLabel = MasterLabelData(
             productCode = "",
-            wono = arguments?.getString(EXTRA_WONO).orEmpty(),
+            wono = arguments?.getString(BundleKeys.EXTRA_WONO).orEmpty(),
             date = isoDate,
-            qty = arguments?.getInt(EXTRA_QTY) ?: 0
+            qty = arguments?.getInt(BundleKeys.EXTRA_QTY) ?: 0
         )
     }
 
@@ -293,7 +290,18 @@ class CompareFragment : Fragment() {
 //            return
 //        }
 
+        val fragment = CreateBoxLabelFragment().apply {
+            arguments = Bundle().apply {
+                putString(BundleKeys.EXTRA_WONO, masterLabel?.wono)
+                putString(BundleKeys.EXTRA_DATE, masterLabel?.date)  // ISO format
+                putInt(BundleKeys.EXTRA_QTY, masterLabel?.qty ?: 0)
+            }
+        }
 
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun mockScanPackingLabel() {
