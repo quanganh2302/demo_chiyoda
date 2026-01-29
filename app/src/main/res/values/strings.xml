@@ -72,6 +72,14 @@
     <string name="auto">Auto</string>
     <string name="number_of_box">Number of box</string>
     <string name="list_boxes">List boxes:</string>
-"
+    <string name="enter_product_per_box">Please enter the number of products per box</string>
+    <string name="enter_number_of_box">Please enter the number of boxes</string>
+    <string name="product" >Products</string>
 
+    <string name="toast_invalid_completed_count">Please enter a valid completed count</string>
+    <string name="toast_invalid_packing_quantity">Please enter a valid packing quantity</string>
+    <string name="toast_no_packing_quantity">Please enter a packing quantity</string>
+    <string name="toast_boxes_created_with_remaining">Created %1$d full %2$s (%3$d items each) + 1 box with %4$d items</string>
+    <string name="toast_boxes_created_full">Created %1$d %2$s with %3$d items each</string>
+    <string name="toast_no_boxes">No boxes to print</string>
 </resources>

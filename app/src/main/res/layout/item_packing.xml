@@ -23,7 +23,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etProductPerBox"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="53dp"
+            android:cursorVisible="false"
+            android:enabled="false"
+            android:focusable="false"
             android:inputType="number"
             android:padding="8dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -46,7 +49,10 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:inputType="number"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:enabled="false"
+            android:focusable="false"
+            android:cursorVisible="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Nút xóa -->

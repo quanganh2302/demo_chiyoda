@@ -12,7 +12,7 @@ import com.example.myapplication.ui.utils.DateUiFormatter
 
 class RecyclerViewAdapter(
     private val items: MutableList<PackingLabel>,
-    private val onDelete: (Int) -> Unit
+    private val onDelete: (Int) -> Unit,
 ) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

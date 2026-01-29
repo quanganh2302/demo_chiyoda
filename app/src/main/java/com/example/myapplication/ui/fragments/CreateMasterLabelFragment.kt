@@ -106,7 +106,8 @@ class CreateMasterLabelFragment : Fragment() {
         }
 
         btnDebug?.setOnClickListener {
-            mockScanWO()
+//            mockScanWO()
+            parentFragmentManager.popBackStack()
         }
     }
 

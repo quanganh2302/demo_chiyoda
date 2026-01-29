@@ -24,6 +24,8 @@ class CreateBoxLabelFragment : Fragment() {
 
     private var masterLabel : MasterLabelData? = null
 
+    private var selectedPackingType: String = ""
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -96,12 +98,11 @@ class CreateBoxLabelFragment : Fragment() {
 
         if (packingTypes.isNotEmpty()) {
             binding.actvCategory.setText(packingTypes[0], false)
-            // Parameter `false` để không trigger onItemClickListener
+            selectedPackingType = packingTypes[0]
         }
         // Handle selection
         binding.actvCategory.setOnItemClickListener { parent, _, position, _ ->
-            val selectedType = packingTypes[position]
-            // Do something with selected type
+            selectedPackingType = packingTypes[position]
         }
     }
     private fun setupButton(){
@@ -118,6 +119,7 @@ class CreateBoxLabelFragment : Fragment() {
         val fragment = PrintLabelFragment().apply {
             arguments = Bundle().apply {
                 putInt(BundleKeys.EXTRA_QTY, masterLabel?.qty ?: 0)
+                putString(BundleKeys.EXTRA_PACKING_TYPE, selectedPackingType)
             }
         }
         parentFragmentManager.beginTransaction()

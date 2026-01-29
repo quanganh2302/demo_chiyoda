@@ -73,5 +73,15 @@
     <string name="auto" translatable="false" > Tự động </string>
     <string name="number_of_box" translatable="false" >Số thùng</string>
     <string name="list_boxes" translatable="false" >Danh sách thùng:</string>
+    <string name="enter_product_per_box" translatable="false">Vui lòng nhập số sản phẩm mỗi thùng</string>
+    <string name="enter_number_of_box" translatable="false">Vui lòng nhập số lượng thùng</string>
+    <string name="product" translatable="false">Sản phẩm</string>
+
+    <string name="toast_invalid_completed_count" translatable="false">Vui lòng nhập số lượng hoàn thành hợp lệ</string>
+    <string name="toast_invalid_packing_quantity" translatable="false">Vui lòng nhập số lượng đóng gói hợp lệ</string>
+    <string name="toast_no_packing_quantity" translatable="false">Vui lòng nhập số lượng đóng gói </string>
+    <string name="toast_boxes_created_with_remaining" translatable="false">Đã tạo %1$d %2$s đầy (%3$d sản phẩm mỗi thùng) + 1 thùng với %4$d sản phẩm</string>
+    <string name="toast_boxes_created_full" translatable="false">Đã tạo %1$d %2$s với %3$d sản phẩm mỗi thùng</string>
+    <string name="toast_no_boxes" translatable="false">Không có thùng để in</string>
 
 </resources>

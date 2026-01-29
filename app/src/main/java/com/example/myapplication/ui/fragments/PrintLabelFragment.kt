@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentPrintLabelBinding
 import com.example.myapplication.models.Box
 import com.example.myapplication.ui.adapter.PackingAdapter
+import com.example.myapplication.ui.utils.ToastManager
 import com.example.myapplication.ui.utils.contants.BundleKeys
 
 class PrintLabelFragment : Fragment() {
@@ -22,6 +25,7 @@ class PrintLabelFragment : Fragment() {
     private val binding get() = _binding!!
     private val listBoxes = mutableListOf<Box>()
     private var qty: Int = 0
+    private var packingType: String = ""
 
     private lateinit var packingAdapter: PackingAdapter
 
@@ -38,9 +42,11 @@ class PrintLabelFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         qty = arguments?.getInt(BundleKeys.EXTRA_QTY) ?: 0
+        packingType = arguments?.getString(BundleKeys.EXTRA_PACKING_TYPE, "").toString()
         binding.edtNumberOfCompleted.setText(qty.toString())
 
         setupRecyclerView()
+        updateListTitle()
         setupButtons()
     }
 
@@ -54,7 +60,7 @@ class PrintLabelFragment : Fragment() {
             if (position in listBoxes.indices) {
                 listBoxes.removeAt(position)
                 packingAdapter.notifyItemRemoved(position)
-                Log.d(TAG, "Box removed at position $position. Total: ${listBoxes.size}")
+                updateListTitle()
             }
         }
 
@@ -72,7 +78,7 @@ class PrintLabelFragment : Fragment() {
 
         // Auto button
         binding.btnAuto.setOnClickListener {
-            autoDistribute()
+            handleAutoDistribute()
         }
 
         // Print button
@@ -82,38 +88,41 @@ class PrintLabelFragment : Fragment() {
     }
 
     private fun addBox() {
-        val input = binding.edtProductsPerBox.text.toString()
+        val productPerBox = binding.edtProductsPerBox.text.toString()
+        val boxCountText = binding.etBoxCount.text.toString()
 
-        if (input.isBlank()) {
-            Log.w(TAG, "Input is blank")
+        if (productPerBox.isEmpty()) {
+            ToastManager.warning(requireContext(), getString(R.string.enter_product_per_box))
             return
         }
 
-        val productsPerBox = input.toIntOrNull()
+        val productsPerBox = productPerBox.toInt()
 
-        if (productsPerBox == null || productsPerBox <= 0) {
-            Log.w(TAG, "Invalid input: $input")
+        if (productsPerBox <= 0) {
             return
         }
+
+        val boxCount = boxCountText.toLongOrNull()?.takeIf { it > 0 } ?: 1
 
         // Tìm box đã tồn tại
         val existingIndex = listBoxes.indexOfFirst { it.numberBox == productsPerBox }
 
         if (existingIndex != -1) {
-            // ✅ Box đã tồn tại -> tăng count
-            listBoxes[existingIndex].count += 1
+            // Box đã tồn tại -> tăng count
+            listBoxes[existingIndex].count += boxCount
             packingAdapter.notifyItemChanged(existingIndex)
+
             Log.d(TAG, "Updated box: $productsPerBox, count: ${listBoxes[existingIndex].count}")
         } else {
-            // ✅ Box mới -> thêm vào list
+            // Box mới -> thêm vào list
             val newBox = Box(
                 numberBox = productsPerBox,
-                count = 1
+                count = boxCount
             )
             listBoxes.add(newBox)
             packingAdapter.notifyItemInserted(listBoxes.size - 1)
 
-            // ✅ SCROLL ĐẾN ITEM MỚI
+            // Scroll đến item mới
             binding.rvBoxes.smoothScrollToPosition(listBoxes.size - 1)
 
             Log.d(TAG, "Added new box: $productsPerBox. Total: ${listBoxes.size}")
@@ -121,15 +130,144 @@ class PrintLabelFragment : Fragment() {
 
         // Clear input
         binding.edtProductsPerBox.text?.clear()
+        binding.etBoxCount.text?.clear()
+        updateListTitle()
     }
 
-    private fun autoDistribute() {
-        // TODO: Implement auto distribution logic
-        Log.d(TAG, "Auto distribute clicked")
+    private fun updateListTitle() {
+        val totalBoxes = listBoxes.sumOf { it.count }
+        val totalProducts = listBoxes.sumOf { it.numberBox * it.count }
+
+        if (totalBoxes == 0L) {
+            binding.tvListTitle.setText(R.string.list_boxes)
+        } else {
+            binding.tvListTitle.text =
+                getString(R.string.list_boxes) +
+                        " $totalBoxes $packingType ($totalProducts ${getString(R.string.product)})"
+        }
+    }
+
+    /**
+     * Xử lý nút Auto - Tự động phân phối boxes
+     */
+    private fun handleAutoDistribute() {
+        // Lấy số lượng đã hoàn thành
+        val completedCount = binding.edtNumberOfCompleted.text.toString().toIntOrNull() ?: 0
+        if (completedCount < 0) {
+            ToastManager.warning(
+                requireContext(),
+                getString(R.string.toast_invalid_completed_count)
+            )
+            return
+        }
+
+        if (completedCount == 0) {
+            ToastManager.warning(
+                requireContext(),
+                getString(R.string.enter_product_per_box)
+            )
+            return
+        }
+
+        // Lấy số lượng sản phẩm mỗi box
+        val packingQuantityText = binding.edtProductsPerBox.text.toString()
+        if (packingQuantityText.isEmpty()) {
+            ToastManager.warning(
+                requireContext(),
+                getString(R.string.enter_product_per_box)
+            )
+            return
+        }
+
+        val packingQuantity = packingQuantityText.toIntOrNull()
+        if (packingQuantity == null || packingQuantity <= 0) {
+            ToastManager.warning(
+                requireContext(),
+                getString(R.string.toast_invalid_packing_quantity)
+            )
+            return
+        }
+
+        // Gọi logic tạo boxes tự động
+        autoGenerateBoxes(completedCount, packingQuantity)
+    }
+
+    /**
+     * Logic tạo boxes tự động
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private fun autoGenerateBoxes(totalItems: Int, itemsPerBox: Int) {
+        // Xóa tất cả boxes cũ
+        listBoxes.clear()
+
+        // Tính số boxes đầy và số lượng còn lại
+        val fullBoxes = totalItems / itemsPerBox
+        val remainingItems = totalItems % itemsPerBox
+
+        // Thêm các boxes đầy
+        if (fullBoxes > 0) {
+            listBoxes.add(
+                Box(
+                    numberBox = itemsPerBox,
+                    count = fullBoxes.toLong()
+                )
+            )
+        }
+
+        // Thêm box chứa số lượng còn lại (nếu có)
+        if (remainingItems > 0) {
+            listBoxes.add(
+                Box(
+                    numberBox = remainingItems,
+                    count = 1
+                )
+            )
+        }
+
+        // Cập nhật UI
+        packingAdapter.notifyDataSetChanged()
+        updateListTitle()
+
+        // Scroll đến item cuối
+        if (listBoxes.isNotEmpty()) {
+            binding.rvBoxes.smoothScrollToPosition(listBoxes.size - 1)
+        }
+
+        // Clear input
+        binding.edtProductsPerBox.text?.clear()
+        binding.etBoxCount.text?.clear()
+
+        // Show success message
+        val message = if (remainingItems > 0) {
+            getString(
+                R.string.toast_boxes_created_with_remaining,
+                fullBoxes,
+                packingType,
+                itemsPerBox,
+                remainingItems
+            )
+        } else {
+            getString(
+                R.string.toast_boxes_created_full,
+                fullBoxes,
+                packingType,
+                itemsPerBox
+            )
+        }
+
+        ToastManager.success(requireContext(), message)
+
+        Log.d(TAG, "Auto generated: $fullBoxes full boxes + $remainingItems remaining items")
     }
 
     private fun printLabels() {
+//        if (listBoxes.isEmpty()) {
+//            ToastManager.warning(requireContext(), getString(R.string.toast_no_boxes))
+//            return
+//        }
+
         // TODO: Implement print labels logic
         Log.d(TAG, "Print labels clicked. Total boxes: ${listBoxes.size}")
+        ToastManager.success(requireContext(), "Preparing to print ${listBoxes.size} labels")
     }
 }
