@@ -20,7 +20,7 @@ class RecyclerViewAdapter(
         val tvOrder: TextView = view.findViewById(R.id.tvOrder)
         val tvDate: TextView = view.findViewById(R.id.tvDate)
         val tvQty: TextView = view.findViewById(R.id.tvQty)
-        val btnDelete: Button = view.findViewById(R.id.btnDelete)
+//        val btnDelete: Button = view.findViewById(R.id.btnDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
