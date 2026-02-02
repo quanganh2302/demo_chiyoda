@@ -44,6 +44,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.github.ahmmedrejowan.CuteToast:CuteToast:1.2")
+    implementation("com.google.code.gson:gson:2.13.2")
+    implementation(libs.signalr)
 
     //SDK keyence
     implementation(files("libs/sdk.jar"))

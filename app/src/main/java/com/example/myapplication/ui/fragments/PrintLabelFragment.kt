@@ -10,10 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentPrintLabelBinding
+import com.example.myapplication.helper.ChiyodaInfo
 import com.example.myapplication.models.Box
+import com.example.myapplication.service.signalR.SignalRManager
+import com.example.myapplication.service.signalR.SimpleEventListener
+import com.example.myapplication.models.SubmitResponseDto
+import com.example.myapplication.models.SystemStatusUpdate
 import com.example.myapplication.ui.adapter.PackingAdapter
 import com.example.myapplication.ui.utils.ToastManager
 import com.example.myapplication.ui.utils.contants.BundleKeys
+import com.example.myapplication.ultis.common.SignalRResponseHandler
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class PrintLabelFragment : Fragment() {
 
@@ -26,8 +34,43 @@ class PrintLabelFragment : Fragment() {
     private val listBoxes = mutableListOf<Box>()
     private var qty: Int = 0
     private var packingType: String = ""
+    private var wono: String = ""
+    private var entryDate: String = ""
 
     private lateinit var packingAdapter: PackingAdapter
+
+    // SignalR Event Listener
+    private val signalREventListener = object : SimpleEventListener() {
+        override fun onSubmitResponse(response: SubmitResponseDto) {
+            // Handle response from RPA
+            activity?.runOnUiThread {
+                SignalRResponseHandler.handleAndShowResponse(
+                    requireContext(),
+                    response,
+                    onSuccess = { successResponse ->
+                        Log.d(TAG, "✅ Task submitted successfully: ${successResponse.jobId}")
+                        // Navigate back or clear data
+                        clearDataAndNavigateBack()
+                    },
+                    onError = { errorResponse ->
+                        Log.e(TAG, "❌ Task submission failed: ${errorResponse.error}")
+                    }
+                )
+            }
+        }
+
+        override fun onSystemStatusUpdate(update: SystemStatusUpdate) {
+            // Handle system status updates
+            Log.d(TAG, "System status: ${update.status}, Can submit: ${update.canSubmitTasks}")
+        }
+
+        override fun onRpaError(error: String) {
+            // Handle RPA errors
+            activity?.runOnUiThread {
+                ToastManager.error(requireContext(), "RPA Error: $error")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,9 +84,16 @@ class PrintLabelFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get arguments
         qty = arguments?.getInt(BundleKeys.EXTRA_QTY) ?: 0
         packingType = arguments?.getString(BundleKeys.EXTRA_PACKING_TYPE, "").toString()
+        wono = arguments?.getString(BundleKeys.EXTRA_WONO, "").toString()
+        entryDate = arguments?.getString(BundleKeys.EXTRA_DATE, "").toString()
+
         binding.edtNumberOfCompleted.setText(qty.toString())
+
+        // Register SignalR event listener
+        SignalRManager.registerEventListener(signalREventListener)
 
         setupRecyclerView()
         updateListTitle()
@@ -52,6 +102,8 @@ class PrintLabelFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // IMPORTANT: Unregister listener
+        SignalRManager.unregisterEventListener(signalREventListener)
         _binding = null
     }
 
@@ -104,31 +156,23 @@ class PrintLabelFragment : Fragment() {
 
         val boxCount = boxCountText.toLongOrNull()?.takeIf { it > 0 } ?: 1
 
-        // Tìm box đã tồn tại
         val existingIndex = listBoxes.indexOfFirst { it.numberBox == productsPerBox }
 
         if (existingIndex != -1) {
-            // Box đã tồn tại -> tăng count
             listBoxes[existingIndex].count += boxCount
             packingAdapter.notifyItemChanged(existingIndex)
-
             Log.d(TAG, "Updated box: $productsPerBox, count: ${listBoxes[existingIndex].count}")
         } else {
-            // Box mới -> thêm vào list
             val newBox = Box(
                 numberBox = productsPerBox,
                 count = boxCount
             )
             listBoxes.add(newBox)
             packingAdapter.notifyItemInserted(listBoxes.size - 1)
-
-            // Scroll đến item mới
             binding.rvBoxes.smoothScrollToPosition(listBoxes.size - 1)
-
             Log.d(TAG, "Added new box: $productsPerBox. Total: ${listBoxes.size}")
         }
 
-        // Clear input
         binding.edtProductsPerBox.text?.clear()
         binding.etBoxCount.text?.clear()
         updateListTitle()
@@ -147,11 +191,7 @@ class PrintLabelFragment : Fragment() {
         }
     }
 
-    /**
-     * Xử lý nút Auto - Tự động phân phối boxes
-     */
     private fun handleAutoDistribute() {
-        // Lấy số lượng đã hoàn thành
         val completedCount = binding.edtNumberOfCompleted.text.toString().toIntOrNull() ?: 0
         if (completedCount < 0) {
             ToastManager.warning(
@@ -169,7 +209,6 @@ class PrintLabelFragment : Fragment() {
             return
         }
 
-        // Lấy số lượng sản phẩm mỗi box
         val packingQuantityText = binding.edtProductsPerBox.text.toString()
         if (packingQuantityText.isEmpty()) {
             ToastManager.warning(
@@ -188,23 +227,16 @@ class PrintLabelFragment : Fragment() {
             return
         }
 
-        // Gọi logic tạo boxes tự động
         autoGenerateBoxes(completedCount, packingQuantity)
     }
 
-    /**
-     * Logic tạo boxes tự động
-     */
     @SuppressLint("NotifyDataSetChanged")
     private fun autoGenerateBoxes(totalItems: Int, itemsPerBox: Int) {
-        // Xóa tất cả boxes cũ
         listBoxes.clear()
 
-        // Tính số boxes đầy và số lượng còn lại
         val fullBoxes = totalItems / itemsPerBox
         val remainingItems = totalItems % itemsPerBox
 
-        // Thêm các boxes đầy
         if (fullBoxes > 0) {
             listBoxes.add(
                 Box(
@@ -214,7 +246,6 @@ class PrintLabelFragment : Fragment() {
             )
         }
 
-        // Thêm box chứa số lượng còn lại (nếu có)
         if (remainingItems > 0) {
             listBoxes.add(
                 Box(
@@ -224,20 +255,16 @@ class PrintLabelFragment : Fragment() {
             )
         }
 
-        // Cập nhật UI
         packingAdapter.notifyDataSetChanged()
         updateListTitle()
 
-        // Scroll đến item cuối
         if (listBoxes.isNotEmpty()) {
             binding.rvBoxes.smoothScrollToPosition(listBoxes.size - 1)
         }
 
-        // Clear input
         binding.edtProductsPerBox.text?.clear()
         binding.etBoxCount.text?.clear()
 
-        // Show success message
         val message = if (remainingItems > 0) {
             getString(
                 R.string.toast_boxes_created_with_remaining,
@@ -256,18 +283,97 @@ class PrintLabelFragment : Fragment() {
         }
 
         ToastManager.success(requireContext(), message)
-
         Log.d(TAG, "Auto generated: $fullBoxes full boxes + $remainingItems remaining items")
     }
 
+    /**
+     * ✅ CHECK CONNECTION & SUBMIT TASK TO RPA
+     */
     private fun printLabels() {
-//        if (listBoxes.isEmpty()) {
-//            ToastManager.warning(requireContext(), getString(R.string.toast_no_boxes))
-//            return
-//        }
+        // 1. Validate data
+        if (listBoxes.isEmpty()) {
+            ToastManager.warning(requireContext(), getString(R.string.toast_no_boxes))
+            return
+        }
 
-        // TODO: Implement print labels logic
-        Log.d(TAG, "Print labels clicked. Total boxes: ${listBoxes.size}")
-        ToastManager.success(requireContext(), "Preparing to print ${listBoxes.size} labels")
+        // 2. Check SignalR connection
+        if (!SignalRManager.isConnected()) {
+            ToastManager.error(
+                requireContext(),
+                "Not connected to RPA system. Please wait for connection..."
+            )
+            Log.e(TAG, "❌ Cannot submit task - SignalR not connected")
+            return
+        }
+
+        // 3. Get connection info for debugging
+        val connectionInfo = SignalRManager.getConnectionInfo()
+        Log.d(TAG, "Connection state: ${connectionInfo.state}")
+        Log.d(TAG, "Server URL: ${connectionInfo.serverUrl}")
+
+        // 4. Calculate total completed count
+        val completedCount = binding.edtNumberOfCompleted.text.toString().toLongOrNull() ?: 0L
+
+        // 5. Get packing type code (convert display name to code)
+        val packingTypeCode = getPackingTypeCode(packingType)
+
+        // 6. Create ChiyodaInfo object
+        val chiyodaInfo = ChiyodaInfo(
+            wono = wono,
+            completedCount = completedCount,
+            entryDate = entryDate,  // ISO format: "2026-01-26"
+            packingType = packingTypeCode,
+            wonoComplete = false
+        )
+
+        Log.d(TAG, "═══════════════════════════════════")
+        Log.d(TAG, "📤 Submitting task to RPA:")
+        Log.d(TAG, "WO No: ${chiyodaInfo.wono}")
+        Log.d(TAG, "Completed Count: ${chiyodaInfo.completedCount}")
+        Log.d(TAG, "Entry Date: ${chiyodaInfo.entryDate}")
+        Log.d(TAG, "Packing Type: ${chiyodaInfo.packingType}")
+        Log.d(TAG, "Total Boxes: ${listBoxes.size}")
+        Log.d(TAG, "═══════════════════════════════════")
+
+        // 7. Submit task to RPA
+        val success = SignalRManager.submitTask(chiyodaInfo)
+
+        if (success) {
+            ToastManager.success(
+                requireContext(),
+                "Task submitted to RPA. Please wait for response..."
+            )
+            Log.d(TAG, "✅ Task submitted successfully")
+        } else {
+            ToastManager.error(
+                requireContext(),
+                "Failed to submit task to RPA"
+            )
+            Log.e(TAG, "❌ Failed to submit task")
+        }
+    }
+
+    /**
+     * Convert packing type display name to code
+     */
+    private fun getPackingTypeCode(displayName: String): Int {
+        // Assuming packing types are stored in resources
+        val packingTypes = resources.getStringArray(R.array.packing_types)
+        val index = packingTypes.indexOf(displayName)
+
+        // Return index as code (0, 1, 2, etc.)
+        // Adjust this logic based on your actual packing type codes
+        return if (index >= 0) index else 0
+    }
+
+    /**
+     * Clear data and navigate back after successful submission
+     */
+    private fun clearDataAndNavigateBack() {
+        // Clear the fragment back stack to home
+        parentFragmentManager.popBackStack(
+            null,
+            androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
     }
 }

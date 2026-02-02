@@ -20,7 +20,7 @@ class RecyclerViewAdapter(
         val tvOrder: TextView = view.findViewById(R.id.tvOrder)
         val tvDate: TextView = view.findViewById(R.id.tvDate)
         val tvQty: TextView = view.findViewById(R.id.tvQty)
-        val btnDelete: Button = view.findViewById(R.id.btnDelete)
+//        val btnDelete: Button = view.findViewById(R.id.btnDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,12 +37,12 @@ class RecyclerViewAdapter(
         holder.tvDate.text = DateUiFormatter.format(item.date) ?: "-"
         holder.tvQty.text = item.quantity.toString()
 
-        holder.btnDelete.setOnClickListener {
-            val adapterPosition = holder.adapterPosition
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                onDelete(adapterPosition)
-            }
-        }
+//        holder.btnDelete.setOnClickListener {
+//            val adapterPosition = holder.adapterPosition
+//            if (adapterPosition != RecyclerView.NO_POSITION) {
+//                onDelete(adapterPosition)
+//            }
+//        }
     }
 
     override fun getItemCount(): Int = items.size

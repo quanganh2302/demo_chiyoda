@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -40,35 +39,20 @@ class CompareFragment : Fragment() {
     private var masterLabel: MasterLabelData? = null
     private var mNotification: Notification? = null
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putSerializable(
-            "SCANNED_LABELS",
-            ArrayList(scannedLabels)
-        )
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCompareLabelBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Lấy dữ liệu từ arguments và tạo masterLabel
         setupMasterLabelData()
-
-        // 2. Bind dữ liệu vào các view trong header
-        // Việc này sẽ chạy lại mỗi khi view được tạo, sử dụng Locale mới nhất
         masterLabel?.let { bindMasterLabel(it) }
-
 
         savedInstanceState
             ?.getSerializable("SCANNED_LABELS")
@@ -79,7 +63,6 @@ class CompareFragment : Fragment() {
                 updateScannedLabelCount()
             }
         setupRecyclerView()
-
         setupButtons()
     }
 
@@ -91,13 +74,13 @@ class CompareFragment : Fragment() {
         scanJob = viewLifecycleOwner.lifecycleScope.launch {
             try {
                 ScannerConfig.initialize(requireContext())
-                Log.d(TAG, "✅ Scanner initialized successfully")
+                Log.d(TAG, "✅ Scanner initialized successfully ")
 
                 ScannerConfig.scanEventFlow.collect { event ->
                     handleScanEvent(event)
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "❌ Scanner initialization failed", e)
+                Log.e(TAG, "❌ Scanner initialization failed ", e)
             }
         }
     }
@@ -106,6 +89,15 @@ class CompareFragment : Fragment() {
         super.onStop()
         scanJob?.cancel()
         scanJob = null
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putSerializable(
+            "SCANNED_LABELS",
+            ArrayList(scannedLabels)
+        )
     }
 
     override fun onDestroyView() {
@@ -117,7 +109,6 @@ class CompareFragment : Fragment() {
         val isoDate = arguments?.getString(BundleKeys.EXTRA_DATE).orEmpty()
 
         masterLabel = MasterLabelData(
-            productCode = "",
             wono = arguments?.getString(BundleKeys.EXTRA_WONO).orEmpty(),
             date = isoDate,
             qty = arguments?.getInt(BundleKeys.EXTRA_QTY) ?: 0
@@ -127,18 +118,12 @@ class CompareFragment : Fragment() {
     private fun bindMasterLabel(data: MasterLabelData) = with(binding) {
         tvWoNoValue.text = data.wono
 
-        // Format date từ ISO string sang định dạng UI theo locale hiện tại
         val formattedDate = runCatching {
-            // Parse ISO date string thành LocalDate
             val localDate = LocalDate.parse(data.date)
-
-            // Format theo locale hiện tại
             DateUiFormatter.format(localDate)
         }.getOrNull()
 
-        // Gán giá trị đã format, hoặc giá trị gốc nếu có lỗi
         tvDateValue.text = formattedDate ?: data.date
-
         tvQtyValue.text = data.qty.toString()
     }
 
@@ -187,8 +172,15 @@ class CompareFragment : Fragment() {
         addItemToList(packingLabel)
     }
 
-    fun playWarningSound(tone: Int = 15): Boolean {
-        return false
+    private fun playWarningSound(tone: Int = 15): Boolean {
+        val onPeriod = 100
+        val offPeriod = 100
+        val repeatCount = 3
+
+        return mNotification?.run {
+            startBuzzer(tone, onPeriod, offPeriod, repeatCount)
+            startLed(Notification.Led.YELLOW, onPeriod, offPeriod, repeatCount)
+        } ?: false
     }
 
     private fun addItemToList(label: PackingLabel) {
@@ -230,7 +222,6 @@ class CompareFragment : Fragment() {
 
     private fun setupButtons() = with(binding) {
         btnBack.setOnClickListener {
-//            mockScanPackingLabel()
             parentFragmentManager.popBackStack()
         }
 
@@ -262,7 +253,7 @@ class CompareFragment : Fragment() {
             .setCancelable(false)
             .setPositiveButton(getText(R.string.create_chiyoda_label)) { dialog, _ ->
                 dialog.dismiss()
-                nagativeToCHiYodaLabel()
+                navigateToCreateBoxLabel()
             }
             .setNegativeButton(getText(R.string.back)) { dialog, _ ->
                 dialog.dismiss()
@@ -272,49 +263,26 @@ class CompareFragment : Fragment() {
                         putBoolean("should_clear", true)
                     }
                 )
-
                 parentFragmentManager.popBackStack()
             }
             .create()
         dialog.show()
     }
 
-    private fun nagativeToCHiYodaLabel() {
-//        if (!com.example.myapplication.manager.RpaErrorManager.canAccessQcChiyoda()) {
-//            // Hiển thị dialog cảnh báo
-//            com.example.myapplication.manager.RpaErrorManager.showRpaErrorDialog(requireContext())
-//            ToastCommon.showWarning(
-//                requireContext(),
-//                "Cannot access QC Chiyoda due to RPA error. Please contact administrator."
-//            )
-//            return
-//        }
+    private fun navigateToCreateBoxLabel() {
+        val bundle = Bundle().apply {
+            putString(BundleKeys.EXTRA_WONO, masterLabel?.wono)
+            putString(BundleKeys.EXTRA_DATE, masterLabel?.date)
+            putInt(BundleKeys.EXTRA_QTY, masterLabel?.qty ?: 0)
+        }
 
         val fragment = CreateBoxLabelFragment().apply {
-            arguments = Bundle().apply {
-                putString(BundleKeys.EXTRA_WONO, masterLabel?.wono)
-                putString(BundleKeys.EXTRA_DATE, masterLabel?.date)  // ISO format
-                putInt(BundleKeys.EXTRA_QTY, masterLabel?.qty ?: 0)
-            }
+            arguments = bundle
         }
 
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
-    }
-
-    private fun mockScanPackingLabel() {
-        val mockQrData =
-            "835E 37833,R04,100,09/07/2025,${masterLabel?.wono},"
-
-        Log.d(TAG, "🧪 Mock packing QR = $mockQrData")
-
-        handleScanEvent(
-            ScanEvent.Success(
-                data = mockQrData,
-                codeType = "QR_CODE"
-            )
-        )
     }
 }

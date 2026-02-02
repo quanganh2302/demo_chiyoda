@@ -1,0 +1,68 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/dialog_background"
+    android:gravity="center"
+    tools:ignore="HardcodedText">
+
+    <!-- Icon Container -->
+    <FrameLayout
+        android:id="@+id/fl_icon_container"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/icon_background_success"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/iv_dialog_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check_circle"
+            android:contentDescription="Dialog Icon"
+             />
+
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="10dp"
+        android:gravity="center" />
+
+    <!-- Message -->
+    <TextView
+        android:id="@+id/tv_dialog_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:textColor="#666666"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp" />
+
+    <!-- Button -->
+    <Button
+        android:id="@+id/btn_dialog_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:textSize="16sp"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="12dp"
+        android:background="@drawable/bg_btn_primary"
+        android:textColor="@android:color/white"
+        android:minWidth="120dp" />
+
+</LinearLayout>

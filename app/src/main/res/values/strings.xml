@@ -82,4 +82,18 @@
     <string name="toast_boxes_created_with_remaining">Created %1$d full %2$s (%3$d items each) + 1 box with %4$d items</string>
     <string name="toast_boxes_created_full">Created %1$d %2$s with %3$d items each</string>
     <string name="toast_no_boxes">No boxes to print</string>
+
+    <string name="signalr_submit_success_title">Submitted Successfully!</string>
+    <string name="signalr_submit_success_message">Estimated Start Time: %4$s</string>
+
+    <string name="signalr_error_title"> Error</string>
+    <string name="signalr_error_tomato_not_running">TOMATO application is not running.\nPlease start TOMATO or wait for auto-restart.</string>
+    <string name="signalr_error_system_paused">RPA System is paused.\nPlease contact administrator.\nStatus: %1$s</string>
+    <string name="signalr_error_invalid_input">Invalid input\n%1$s</string>
+    <string name="signalr_error_internal">Internal server error\n%1$s</string>
+    <string name="signalr_error_unknown">Unknown error\n%1$s</string>
+
+    <string name="signalr_connecting">Connecting RPA...</string>
+    <string name="signalr_sending">Sending data...</string>
+    <string name="signalr_connection_failed">Cannot connect to RPA.\nPlease check network connection.</string>
 </resources>

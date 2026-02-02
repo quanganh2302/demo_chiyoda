@@ -57,7 +57,7 @@ class CreateMasterLabelFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindViews(view)
-        setupActions()
+        setupButtons()
 
         arguments?.getString(BundleKeys.EXTRA_WONO)?.let {
             edtWoNo.setText(it)
@@ -77,9 +77,10 @@ class CreateMasterLabelFragment : Fragment() {
         super.onStart()
         scanJob = viewLifecycleOwner.lifecycleScope.launch {
             ScannerConfig.initialize(requireContext())
-
+            Log.d(TAG, "✅ Scanner initialized successfully")
             ScannerConfig.scanEventFlow.collect { event ->
                 handleScanEvent(event)
+                Log.e(TAG, "❌ Scanner initialization failed ")
             }
         }
     }
@@ -100,7 +101,7 @@ class CreateMasterLabelFragment : Fragment() {
         btnDebug = view.findViewById(R.id.btnBack)
     }
 
-    private fun setupActions() {
+    private fun setupButtons() {
         btnCreate.setOnClickListener {
             createMasterLabel()
         }
@@ -153,7 +154,6 @@ class CreateMasterLabelFragment : Fragment() {
         val isoDate = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
 
         val masterLabel = MasterLabelData(
-            productCode = "DEMO_PRODUCT",
             wono = wono,
             date = isoDate,  // Truyền ISO format: "2026-01-26"
             qty = qty

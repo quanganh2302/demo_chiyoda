@@ -84,4 +84,19 @@
     <string name="toast_boxes_created_full" translatable="false">Đã tạo %1$d %2$s với %3$d sản phẩm mỗi thùng</string>
     <string name="toast_no_boxes" translatable="false">Không có thùng để in</string>
 
+    <!-- SignalR Submit Response Messages -->
+    <string name="signalr_submit_success_title" translatable="false">Gửi thành công!</string>
+    <string name="signalr_submit_success_message" translatable="false">Thời gian bắt đầu dự kiến: %4$s\n</string>
+
+    <string name="signalr_error_title" translatable="false">Lỗi!</string>
+    <string name="signalr_error_tomato_not_running" translatable="false">Ứng dụng TOMATO chưa chạy\nVui lòng khởi động TOMATO hoặc chờ tự động khởi động lại</string>
+    <string name="signalr_error_system_paused" translatable="false">Hệ thống RPA đang tạm dừng\nVui lòng liên hệ quản trị viên.\nTrạng thái: %1$s\n</string>
+    <string name="signalr_error_invalid_input" translatable="false">Dữ liệu đầu vào không hợp lệ\n%1$s</string>
+    <string name="signalr_error_internal" translatable="false">Lỗi hệ thống nội bộ\n%1$s\n</string>
+    <string name="signalr_error_unknown" translatable="false">Lỗi không xác định\n%1$s</string>
+
+    <string name="signalr_connecting" translatable="false">Đang kết nối RPA... </string>
+    <string name="signalr_sending" translatable="false">Đang gửi dữ liệu... </string>
+    <string name="signalr_connection_failed" translatable="false">Không thể kết nối RPA\nVui lòng kiểm tra kết nối mạng.</string>
+
 </resources>

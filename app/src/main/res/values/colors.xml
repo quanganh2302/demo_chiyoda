@@ -5,5 +5,11 @@
     <color name="header_background">#000000</color>
     <color name="light_primary">#16A2F5</color>
     <color name="gray">#DDDDDD</color>
+    <color name="transparent">#00000000</color>
 
+
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FFC107</color>
+    <color name="orange">#FF9800</color>
+    <color name="red">#F44336</color>
 </resources>
