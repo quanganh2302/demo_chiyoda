@@ -37,12 +37,12 @@ class RecyclerViewAdapter(
         holder.tvDate.text = DateUiFormatter.format(item.date) ?: "-"
         holder.tvQty.text = item.quantity.toString()
 
-        holder.btnDelete.setOnClickListener {
-            val adapterPosition = holder.adapterPosition
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                onDelete(adapterPosition)
-            }
-        }
+//        holder.btnDelete.setOnClickListener {
+//            val adapterPosition = holder.adapterPosition
+//            if (adapterPosition != RecyclerView.NO_POSITION) {
+//                onDelete(adapterPosition)
+//            }
+//        }
     }
 
     override fun getItemCount(): Int = items.size
